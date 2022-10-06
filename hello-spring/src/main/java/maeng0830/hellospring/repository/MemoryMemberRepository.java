@@ -1,6 +1,7 @@
 package maeng0830.hellospring.repository;
 
 import maeng0830.hellospring.domain.Member;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
 

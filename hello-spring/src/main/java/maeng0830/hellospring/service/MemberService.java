@@ -3,9 +3,12 @@ package maeng0830.hellospring.service;
 import maeng0830.hellospring.domain.Member;
 import maeng0830.hellospring.repository.MemberRepository;
 import maeng0830.hellospring.repository.MemoryMemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
 
 public class MemberService {
     private final MemberRepository memberRepository;
