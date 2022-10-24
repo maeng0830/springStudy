@@ -2,6 +2,7 @@ package maeng0830.hellospring;
 
 import javax.persistence.EntityManager;
 import javax.sql.DataSource;
+import maeng0830.hellospring.aop.TimeTraceAop;
 import maeng0830.hellospring.repository.JdbcTemplateMemberRepository;
 import maeng0830.hellospring.repository.JpaMemberRepository;
 import maeng0830.hellospring.repository.MemberRepository;
