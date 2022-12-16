@@ -9,9 +9,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class OrderServiceImpl implements OrderService {
 
+    // 생성자 주입
     private final MemberRepository memberRepository;
     private final DiscountPolicy discountPolicy;
 
+
+    // 생성자 주입
     @Autowired
     public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
         this.memberRepository = memberRepository;
