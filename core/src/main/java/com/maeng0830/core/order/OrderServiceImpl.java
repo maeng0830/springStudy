@@ -1,5 +1,6 @@
 package com.maeng0830.core.order;
 
+import com.maeng0830.core.annotation.MainDiscountPolicy;
 import com.maeng0830.core.discount.DiscountPolicy;
 import com.maeng0830.core.member.Member;
 import com.maeng0830.core.member.MemberRepository;
@@ -16,7 +17,7 @@ public class OrderServiceImpl implements OrderService {
     private final DiscountPolicy discountPolicy;
 
     @Autowired // Autowired는 기본적으로 타입을 통해 빈을 조회해 대입한다. 타입이 같은 빈이 여러개일 경우, 필드명을 통해 빈을 선택한다.
-    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+    public OrderServiceImpl(MemberRepository memberRepository, @MainDiscountPolicy DiscountPolicy discountPolicy) {
         this.memberRepository = memberRepository;
         this.discountPolicy = discountPolicy;
     }
