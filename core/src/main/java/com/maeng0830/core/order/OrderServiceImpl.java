@@ -3,23 +3,15 @@ package com.maeng0830.core.order;
 import com.maeng0830.core.discount.DiscountPolicy;
 import com.maeng0830.core.member.Member;
 import com.maeng0830.core.member.MemberRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor // 성자를 통해 반드시 초기화 되어야 하는 final 필드에 대해 생성자를 추가해준다.
 public class OrderServiceImpl implements OrderService {
 
-    // 생성자 주입
     private final MemberRepository memberRepository;
     private final DiscountPolicy discountPolicy;
-
-
-    // 생성자 주입
-    @Autowired
-    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
-        this.memberRepository = memberRepository;
-        this.discountPolicy = discountPolicy;
-    }
 
     @Override
     public Order createOrder(Long memberId, String itemName, int itemPrice) {
