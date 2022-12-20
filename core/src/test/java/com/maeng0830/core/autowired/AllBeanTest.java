@@ -17,7 +17,8 @@ public class AllBeanTest {
 
     @Test
     void findAllBean() {
-        ApplicationContext ac = new AnnotationConfigApplicationContext(AutoAppConfig.class, DiscountService.class);
+        ApplicationContext ac = new AnnotationConfigApplicationContext(AutoAppConfig.class,
+            DiscountService.class);
 
         DiscountService discountService = ac.getBean(DiscountService.class);
         assertThat(discountService).isInstanceOf(DiscountService.class);
@@ -31,11 +32,13 @@ public class AllBeanTest {
     }
 
     static class DiscountService {
+
         private final Map<String, DiscountPolicy> policyMap;
         private final List<DiscountPolicy> policies;
 
         @Autowired
-        public DiscountService(Map<String, DiscountPolicy> policyMap, List<DiscountPolicy> policies) {
+        public DiscountService(Map<String, DiscountPolicy> policyMap,
+            List<DiscountPolicy> policies) {
             this.policyMap = policyMap;
             this.policies = policies;
             System.out.println("policyMap = " + policyMap);
