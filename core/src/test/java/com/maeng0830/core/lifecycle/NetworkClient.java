@@ -1,5 +1,8 @@
 package com.maeng0830.core.lifecycle;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
 public class NetworkClient {
     private String url;
 
@@ -26,6 +29,7 @@ public class NetworkClient {
     }
 
     // 의존 관계 주입 후 호출
+    @PostConstruct
     public void init() {
         System.out.println("NetworkClient.init");
         connect();
@@ -33,6 +37,7 @@ public class NetworkClient {
     }
 
     // 빈 소멸 직전 호출
+    @PreDestroy
     public void close() {
         System.out.println("NetworkClient.close");
         disconnect();
