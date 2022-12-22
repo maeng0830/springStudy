@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.inject.Provider;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,14 +46,14 @@ public class SingletonWithPrototypeTest1 {
     @Scope("singleton")
     static class ClientBean {
 
-        private final ObjectProvider<PrototypeBean> prototypeBeanProvider;
+        private final Provider<PrototypeBean> prototypeBeanProvider;
 
-        public ClientBean(ObjectProvider<PrototypeBean> prototypeBeanProvider) {
+        public ClientBean(Provider<PrototypeBean> prototypeBeanProvider) {
             this.prototypeBeanProvider = prototypeBeanProvider;
         }
 
         public int logic() {
-            PrototypeBean prototypeBean = prototypeBeanProvider.getObject();
+            PrototypeBean prototypeBean = prototypeBeanProvider.get();
             prototypeBean.addCount();
             int count = prototypeBean.getCount();
             return count;
