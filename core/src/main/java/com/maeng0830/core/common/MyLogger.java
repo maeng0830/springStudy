@@ -4,10 +4,13 @@ import java.util.UUID;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
 @Component
-@Scope(value = "request") // http 요청 당 1개씩 bean이 생성된다. http 요청이 끝나면 각 bean은 소멸된다.
+@Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
+// http 요청 당 1개씩 bean이 생성된다. http 요청이 끝나면 각 bean은 소멸된다.
+// proxyMode <- 적용 대상이 class면 TARGET_CLASS, interface면 INTERFACES
 public class MyLogger {
 
     private String uuid;
