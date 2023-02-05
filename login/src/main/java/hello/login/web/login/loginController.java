@@ -104,7 +104,7 @@ public class loginController {
 	// filter or interceptor
 	@PostMapping("/login")
 	public String loginV4(@Valid @ModelAttribute("loginForm") LoginForm form,
-			@RequestParam(required = false) String redirectURI,
+			@RequestParam(defaultValue = "/") String redirectURI,
 			BindingResult bindingResult, HttpServletRequest request) {
 		if (bindingResult.hasErrors()) {
 			return "login/loginForm";
