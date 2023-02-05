@@ -101,7 +101,7 @@ public class loginController {
 	}
 
 	// HTTP Session
-	// filter
+	// filter or interceptor
 	@PostMapping("/login")
 	public String loginV4(@Valid @ModelAttribute("loginForm") LoginForm form,
 			@RequestParam(required = false) String redirectURI,
