@@ -8,16 +8,18 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.NoSuchElementException;
 import javax.sql.DataSource;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.support.JdbcUtils;
 
 /**
- * JDBC - DataSource 사용 + JdbcUtils
+ * JDBC - Connection을 파라미터로 사용
  */
 @Slf4j
 @RequiredArgsConstructor
-public class MemberRepositoryV1 {
+@Getter
+public class MemberRepositoryV2 {
 
 	private final DataSource dataSource;
 
@@ -71,6 +73,37 @@ public class MemberRepositoryV1 {
 		}
 	}
 
+	public Member findById(Connection con, String memberId) throws SQLException {
+		String sql = "select * from member where member_id = ?";
+
+		// 파라미터로 받은 connection을 사용한다.
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, memberId);
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				Member member = new Member();
+				member.setMemberId(rs.getString("member_id"));
+				member.setMoney(rs.getInt("money"));
+				return member;
+			} else {
+				throw new NoSuchElementException("member not found memberId=" + memberId);
+			}
+		} catch (SQLException e) {
+			log.error("db error", e);
+			throw e;
+		} finally {
+			JdbcUtils.closeResultSet(rs);
+			JdbcUtils.closeStatement(pstmt);
+			// 동일한 connection을 유지하기 위해, connection을 닫으면 안된다.
+//			JdbcUtils.closeConnection(con);
+		}
+	}
+
 	public void update(String memberId, int money) throws SQLException {
 		String sql = "update member set money=? where member_id=?";
 
@@ -89,6 +122,29 @@ public class MemberRepositoryV1 {
 			throw e;
 		} finally {
 			close(con, pstmt, null);
+		}
+	}
+
+	public void update(Connection con, String memberId, int money) throws SQLException {
+		String sql = "update member set money=? where member_id=?";
+
+		// 파라미터로 받은 connection을 사용한다.
+		PreparedStatement pstmt = null;
+
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, money);
+			pstmt.setString(2, memberId);
+			int resultSize = pstmt.executeUpdate();// 쿼리 실행
+			log.info("resultSize={}", resultSize);
+		} catch (SQLException e) {
+			log.error("db error", e);
+			throw e;
+		} finally {
+
+			JdbcUtils.closeStatement(pstmt);
+			// 동일한 connection을 유지하기 위해, connection을 닫으면 안된다.
+//			JdbcUtils.closeConnection(con);
 		}
 	}
 
