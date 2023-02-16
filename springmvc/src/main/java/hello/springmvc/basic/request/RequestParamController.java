@@ -36,7 +36,7 @@ public class RequestParamController {
 		return "ok";
 	}
 
-	@ResponseBody // 반환 스트링을 그냥 응답 값으로 사용한다.
+	@ResponseBody
 	@RequestMapping("/request-param-v3")
 	public String requestParamV3(
 			@RequestParam String username,
@@ -46,7 +46,7 @@ public class RequestParamController {
 		return "ok";
 	}
 
-	@ResponseBody // 반환 스트링을 그냥 응답 값으로 사용한다.
+	@ResponseBody
 	@RequestMapping("/request-param-v4")
 	public String requestParamV4(String username, int age) {
 
@@ -54,7 +54,7 @@ public class RequestParamController {
 		return "ok";
 	}
 
-	@ResponseBody // 반환 스트링을 그냥 응답 값으로 사용한다.
+	@ResponseBody
 	@RequestMapping("/request-param-required")
 	public String requestParamRequired(
 			@RequestParam(required = true) String username,
@@ -65,7 +65,7 @@ public class RequestParamController {
 		return "ok";
 	}
 
-	@ResponseBody // 반환 스트링을 그냥 응답 값으로 사용한다.
+	@ResponseBody
 	@RequestMapping("/request-param-default")
 	public String requestParamDefault(
 			@RequestParam(required = true, defaultValue = "guest") String username,
@@ -76,7 +76,7 @@ public class RequestParamController {
 		return "ok";
 	}
 
-	@ResponseBody // 반환 스트링을 그냥 응답 값으로 사용한다.
+	@ResponseBody
 	@RequestMapping("/request-param-map")
 	public String requestParamMap(@RequestParam Map<String, Object> paramMap) {
 
