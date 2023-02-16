@@ -6,6 +6,7 @@ import static hello.jdbc.connection.ConnectionConst.USERNAME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.zaxxer.hikari.HikariDataSource;
 import hello.jdbc.domain.Member;
 import hello.jdbc.repository.MemberRepositoryV2;
 import java.sql.SQLException;
@@ -30,8 +31,12 @@ class MemberServiceV2Test {
 
 	@BeforeEach
 	void before() {
-		this.memberRepository = new MemberRepositoryV2(
-				new DriverManagerDataSource(URL, USERNAME, PASSWORD));
+		HikariDataSource dataSource = new HikariDataSource();
+		dataSource.setJdbcUrl(URL);
+		dataSource.setUsername(USERNAME);
+		dataSource.setPassword(PASSWORD);
+
+		this.memberRepository = new MemberRepositoryV2(dataSource);
 
 		this.memberService = new MemberServiceV2(memberRepository.getDataSource(), memberRepository);
 	}
