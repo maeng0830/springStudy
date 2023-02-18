@@ -10,39 +10,58 @@ import com.zaxxer.hikari.HikariDataSource;
 import hello.jdbc.domain.Member;
 import hello.jdbc.repository.MemberRepositoryV3;
 import java.sql.SQLException;
+import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.aop.support.AopUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
 
 /**
- * 트랜잭션 - 트랜잭션 템플릿
+ * 트랜잭션 - @Transactional AOP
  */
 @Slf4j
-class MemberServiceV3_2Test {
+@SpringBootTest
+class MemberServiceV3_3Test {
 	public static final String MEMBER_A = "memberA";
 	public static final String MEMBER_B = "memberB";
 	public static final String MEMBER_EX = "ex";
 
+	@Autowired
 	private MemberRepositoryV3 memberRepository;
-	private MemberServiceV3_2 memberService;
 
-	@BeforeEach
-	void before() {
-		HikariDataSource dataSource = new HikariDataSource();
-		dataSource.setJdbcUrl(URL);
-		dataSource.setUsername(USERNAME);
-		dataSource.setPassword(PASSWORD);
+	@Autowired
+	private MemberServiceV3_3 memberService;
 
-		this.memberRepository = new MemberRepositoryV3(dataSource);
+	@TestConfiguration
+	static class TestConfig {
+		@Bean
+		DataSource dataSource() {
+			return new DriverManagerDataSource(URL, USERNAME, PASSWORD);
+		}
 
-		// jdbc 관련 트랜잭션 매니저
-		PlatformTransactionManager transactionManager = new DataSourceTransactionManager(dataSource);
+		@Bean
+		PlatformTransactionManager transactionManager() {
+			return new DataSourceTransactionManager(dataSource());
+		}
 
-		this.memberService = new MemberServiceV3_2(transactionManager, memberRepository);
+		@Bean
+		MemberRepositoryV3 memberRepositoryV3() {
+			return new MemberRepositoryV3(dataSource());
+		}
+
+		@Bean
+		MemberServiceV3_3 memberServiceV3_3() {
+			return new MemberServiceV3_3(memberRepositoryV3());
+		}
 	}
 
 	@AfterEach
@@ -50,6 +69,14 @@ class MemberServiceV3_2Test {
 		memberRepository.delete(MEMBER_A);
 		memberRepository.delete(MEMBER_B);
 		memberRepository.delete(MEMBER_EX);
+	}
+
+	@Test
+	void AopCheck() {
+		// ... CGLIB <- transaction proxy에서 호출
+		log.info("memberService class={}", memberService.getClass());
+		log.info("memberRepository class={}", memberRepository.getClass());
+		assertThat(AopUtils.isAopProxy(memberService)).isTrue(); // AOP 서비스 검증
 	}
 
 	@Test

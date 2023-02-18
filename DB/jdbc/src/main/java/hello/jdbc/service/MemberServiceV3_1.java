@@ -54,15 +54,4 @@ public class MemberServiceV3_1 {
 			throw new IllegalStateException("이체 중 예외 발생");
 		}
 	}
-
-	private void release(Connection con) {
-		if (con != null) {
-			try {
-				con.setAutoCommit(true); // 커넥션이 반환될 때 기본 값으로 반환
-				con.close(); // 커넥션 반환
-			} catch (Exception e) {
-				log.info("error", e);
-			}
-		}
-	}
 }
