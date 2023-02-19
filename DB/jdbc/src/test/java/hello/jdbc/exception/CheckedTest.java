@@ -9,15 +9,6 @@ import org.junit.jupiter.api.Test;
 @Slf4j
 class CheckedTest {
 
-	/**
-	 * Exception을 상속받은 예외는 체크 예외가 된다.
-	 */
-	static class MyCheckedException extends Exception {
-		public MyCheckedException(String message) {
-			super(message);
-		}
-	}
-
 	@Test
 	void checked_catch() {
 		Service service = new Service();
@@ -32,8 +23,17 @@ class CheckedTest {
 	}
 
 	/**
+	 * Exception을 상속받은 예외는 체크 예외가 된다.
+	 */
+	static class MyCheckedException extends Exception {
+		public MyCheckedException(String message) {
+			super(message);
+		}
+	}
+
+	/**
 	 * Checked 예외는
-	 * 예외를 던지거나, 잡아서 처리해야한다.
+	 * 예외를 던지거나, 잡아서 처리하는 코드를 작성해야한다.
 	 */
 	static class Service {
 		Repository repository = new Repository();
