@@ -8,6 +8,7 @@ import hello.jdbc.repository.MemberRepository;
 import hello.jdbc.repository.MemberRepositoryV3;
 import hello.jdbc.repository.MemberRepositoryV4_1;
 import hello.jdbc.repository.MemberRepositoryV4_2;
+import hello.jdbc.repository.MemberRepositoryV5;
 import java.sql.SQLException;
 import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,7 @@ import org.springframework.context.annotation.Bean;
  * SQLException 제거
  * MemberRepository 인터페이스 의존
  * SQLExceptionTranslator 적용
+ * JdbcTemplate 적용
  */
 @Slf4j
 @SpringBootTest
@@ -49,7 +51,10 @@ class MemberServiceV4Test {
 
 		@Bean
 		MemberRepository memberRepository() {
-			return new MemberRepositoryV4_2(dataSource);
+
+//			return new MemberRepositoryV4_1(dataSource); // 단순 예외 변환
+//			return new MemberRepositoryV4_2(dataSource); // 스프링 예외 변환
+			return new MemberRepositoryV5(dataSource); // JdbcTemplate 적용
 		}
 
 		@Bean
