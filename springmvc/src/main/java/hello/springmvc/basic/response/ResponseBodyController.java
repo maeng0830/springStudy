@@ -16,16 +16,21 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 // @RestController는 @Controller + @ResponseBody의 역할을 한다!
 public class ResponseBodyController {
 
+	// HttpServletResponse 객체를 통해 HTTP 메세지 바디에 데이터를 작성할 수 있다.
 	@GetMapping("/response-body-string-v1")
 	public void responseBodyV1(HttpServletResponse response) throws IOException {
 		response.getWriter().write("ok");
 	}
 
+	// HttpEntity 또는 ResponseEntity 객체를 통해 HTTP 메세지 바디에 데이터를 작성할 수 있다.
+	// HttpEntity는 HTTP 메세지의 헤더, 바디 정보를 갖고 있다.
+	// ResponseEntity는 추가적으로 HTTP 응답 코드를 설정할 수 있다.
 	@GetMapping("/response-body-string-v2")
 	public ResponseEntity<String> responseBodyV2() {
 		return new ResponseEntity<>("ok", HttpStatus.OK);
 	}
 
+	// @ResponseBody를 적용하면, HttpMessageConverter를 통해 HTTP 메세지 바디에 데이터를 작성할 수 있다.
 	@ResponseBody
 	@GetMapping("/response-body-string-v3")
 	public String responseBodyV3() {
