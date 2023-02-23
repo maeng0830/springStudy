@@ -114,6 +114,7 @@ public class MemberRepositoryV0 {
 			close(con, pstmt, null);
 		}
 	}
+
 	// 리소스 정리는 획득의 역순으로 한다.
 	// 획득: Connection -> PreparedStatement -> ResultSet
 	// 정리: ResultSet -> PreparedStatement -> Connection

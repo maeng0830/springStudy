@@ -1,6 +1,5 @@
 package hello.jdbc.repository;
 
-import hello.jdbc.connection.DBConnectionUtil;
 import hello.jdbc.domain.Member;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,6 +17,7 @@ import org.springframework.jdbc.support.JdbcUtils;
 @Slf4j
 public class MemberRepositoryV1 {
 
+	// DataSource 사용
 	private final DataSource dataSource;
 
 	public MemberRepositoryV1(DataSource dataSource) {

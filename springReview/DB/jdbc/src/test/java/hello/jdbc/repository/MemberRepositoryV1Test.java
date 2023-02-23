@@ -24,11 +24,14 @@ class MemberRepositoryV1Test {
 //		DriverManagerDataSource dataSource = new DriverManagerDataSource(URL, USERNAME, PASSWORD);
 
 		// ConnectionPool 사용
+		// HikariCP는 가장 대중적으로 사용되는 커넥션 풀이다.
+		// HikariDataSource는 HikariCP를 사용하는 DataSource 구현체이다.
 		HikariDataSource dataSource = new HikariDataSource();
 		dataSource.setJdbcUrl(URL);
 		dataSource.setUsername(USERNAME);
 		dataSource.setPassword(PASSWORD);
 
+		// DriverMangerDataSource, HikariDataSource는 DataSource의 구현체이다.
 		repository = new MemberRepositoryV1(dataSource);
 	}
 
