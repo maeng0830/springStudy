@@ -44,6 +44,17 @@ public class MemberServiceV2 {
 		}
 	}
 
+	private void bizLogic(Connection con, String fromId, String toId, int money) throws SQLException {
+		Member fromMember = memberRepository.findById(con, fromId);
+		Member toMember = memberRepository.findById(con, toId);
+
+		memberRepository.update(con, fromMember.getMemberId(), fromMember.getMoney() - money);
+
+		validation(toMember);
+
+		memberRepository.update(con, toMember.getMemberId(), toMember.getMoney() + money);
+	}
+
 	private void release(Connection con) {
 		if (con != null) {
 			try {
@@ -55,17 +66,6 @@ public class MemberServiceV2 {
 				log.info("error", e);
 			}
 		}
-	}
-
-	private void bizLogic(Connection con, String fromId, String toId, int money) throws SQLException {
-		Member fromMember = memberRepository.findById(con, fromId);
-		Member toMember = memberRepository.findById(con, toId);
-
-		memberRepository.update(con, fromMember.getMemberId(), fromMember.getMoney() - money);
-
-		validation(toMember);
-
-		memberRepository.update(con, toMember.getMemberId(), toMember.getMoney() + money);
 	}
 
 	private void validation(Member toMember) {
