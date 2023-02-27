@@ -32,9 +32,9 @@ class MemberServiceV3_4Test {
 	private static final String MEMBER_B = "memberB";
 	private static final String MEMBER_EX = "ex";
 
-	private MemberServiceV3_3 memberService;
+	private final MemberServiceV3_3 memberService;
 
-	private MemberRepositoryV3 memberRepository;
+	private final MemberRepositoryV3 memberRepository;
 
 	@Autowired
 	public MemberServiceV3_4Test(MemberServiceV3_3 memberService,
