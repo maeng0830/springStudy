@@ -13,13 +13,13 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 /**
- * JDBC - 트랜잭션매니저를 통한 트랜잭션
+ * JDBC - 트랜잭션매니저(트랜잭션 동기화 매니저)를 통한 트랜잭션
  */
 @RequiredArgsConstructor
 @Slf4j
 public class MemberServiceV3_1 {
 
-	// 트랜잭션매니저를 주입 받는다. 지금은 JDBC 기술을 사용하기 때문에 DataSourceTransactionManager 구현체를 주입 받는다.
+	// 트랜잭션 매니저를 주입 받는다. 지금은 JDBC 기술을 사용하기 때문에 DataSourceTransactionManager 구현체를 주입 받는다.
 	private final PlatformTransactionManager transactionManager;
 	private final MemberRepositoryV3 memberRepository;
 

@@ -13,9 +13,9 @@ import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.jdbc.support.JdbcUtils;
 
 /**
- * JDBC - 트랜잭션매니저를 통한 트랜잭션
- * DataSourceUtils.getConnection()
- * DataSourceUtils.releaseConnection()
+ * JDBC - 트랜잭션매니저(트랜잭션 동기화 매니저)를 통한 트랜잭션
+ * DataSourceUtils.getConnection() - 트랜잭션 동기화를 사용하기 위한 메소드
+ * DataSourceUtils.releaseConnection() - 트랜잭션 동기화를 사용하기 위한 메소드
  */
 @Slf4j
 public class MemberRepositoryV3 {
@@ -57,7 +57,7 @@ public class MemberRepositoryV3 {
 	}
 
 	// 조회
-	// 트랜잭션매니저를 사용하면 더 이상 커넥션을 파라미터로 사용할 필요가 없다.
+	// 트랜잭션매니저(트랜잭션 동기화 매니저)를 사용하면 더 이상 커넥션을 파라미터로 사용할 필요가 없다.
 	public Member findById(String memberId) throws SQLException {
 		String sql = "select * from member where member_id = ?";
 		Connection con = null;
@@ -89,7 +89,7 @@ public class MemberRepositoryV3 {
 	}
 
 	// 수정
-	// 트랜잭션매니저를 사용하면 더 이상 커넥션을 파라미터로 사용할 필요가 없다.
+	// 트랜잭션매니저(트랜잭션 동기화 매니저)를 사용하면 더 이상 커넥션을 파라미터로 사용할 필요가 없다.
 	public void update(String memberId, int money) throws SQLException {
 		String sql = "update member set money=? where member_id=?";
 		Connection con = null;
