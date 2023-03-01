@@ -63,7 +63,6 @@ public class MemberRepositoryV4_2 implements MemberRepository {
 	}
 
 	// 조회
-	// 트랜잭션매니저(트랜잭션 동기화 매니저)를 사용하면 더 이상 커넥션을 파라미터로 사용할 필요가 없다.
 	public Member findById(String memberId) {
 		String sql = "select * from member where member_id = ?";
 		Connection con = null;
@@ -95,7 +94,6 @@ public class MemberRepositoryV4_2 implements MemberRepository {
 	}
 
 	// 수정
-	// 트랜잭션매니저(트랜잭션 동기화 매니저)를 사용하면 더 이상 커넥션을 파라미터로 사용할 필요가 없다.
 	public void update(String memberId, int money) {
 		String sql = "update member set money=? where member_id=?";
 		Connection con = null;

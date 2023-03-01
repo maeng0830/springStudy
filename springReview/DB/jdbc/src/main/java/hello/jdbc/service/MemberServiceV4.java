@@ -20,16 +20,18 @@ public class MemberServiceV4 {
 	private final MemberRepository memberRepository;
 
 	/**
-	 * 트랜잭션 AOP 적용
-	 * 서비스 계층에는 순수한 비즈니스 로직만 남게 된다.
-	 * 트랜잭션 AOP가 @Transactional을 인식하여 트랜잭션 프록시를 적용해준다.
-	 * 트랜잭션 프록시에서 트랜잭션 로직을 모두 처리하며, 실제 서비스 메소드도 대신 호출하여 실행한다.
+	 * repository에서 올라온 예외는 언체크 예외이다.
+	 * 따라서 서비스 계층에서도 throws 키워드를 사용할 필요가 없다.
 	 */
 	@Transactional
 	public void accountTransfer(String fromId, String toId, int money) {
 		bizLogic(fromId, toId, money);
 	}
 
+	/**
+	 * repository에서 올라온 예외는 언체크 예외이다.
+	 * 따라서 서비스 계층에서도 throws 키워드를 사용할 필요가 없다.
+	 */
 	private void bizLogic(String fromId, String toId, int money) {
 		Member fromMember = memberRepository.findById(fromId);
 		Member toMember = memberRepository.findById(toId);
