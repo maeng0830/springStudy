@@ -1,12 +1,10 @@
 package hello.jdbc.exception.basic;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.net.ConnectException;
 import java.sql.SQLException;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 @Slf4j
