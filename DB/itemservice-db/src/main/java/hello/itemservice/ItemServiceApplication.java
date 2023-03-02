@@ -9,8 +9,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 
 
-@Import(MemoryConfig.class)
-@SpringBootApplication(scanBasePackages = "hello.itemservice.web")
+@Import(MemoryConfig.class) // 아래에서 컴포넌트 스캔 범위를 지정하지 않을 경우, @Configuration도 자동으로 컴포넌트 스캔된다.
+@SpringBootApplication(scanBasePackages = "hello.itemservice.web") // 컴포넌트 스캔 범위 지정, MemoryConfig는 범위에 해당안된다.
 public class ItemServiceApplication {
 
 	public static void main(String[] args) {
@@ -18,7 +18,7 @@ public class ItemServiceApplication {
 	}
 
 	@Bean
-	@Profile("local")
+	@Profile("local") // 스프링 구동 profile이 local일 때만 빈으로 등록
 	public TestDataInit testDataInit(ItemRepository itemRepository) {
 		return new TestDataInit(itemRepository);
 	}
