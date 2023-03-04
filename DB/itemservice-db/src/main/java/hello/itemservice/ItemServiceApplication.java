@@ -2,6 +2,7 @@ package hello.itemservice;
 
 import com.zaxxer.hikari.HikariDataSource;
 import hello.itemservice.config.JdbcTemplateV3Config;
+import hello.itemservice.config.MyBatisConfig;
 import hello.itemservice.repository.ItemRepository;
 import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +16,8 @@ import org.springframework.context.annotation.Profile;
 //@Import(MemoryConfig.class) // 아래에서 컴포넌트 스캔 범위를 지정하지 않을 경우, @Configuration도 자동으로 컴포넌트 스캔된다.
 //@Import(JdbcTemplateV1Config.class)
 //@Import(JdbcTemplateV2Config.class)
-@Import(JdbcTemplateV3Config.class)
+//@Import(JdbcTemplateV3Config.class)
+@Import(MyBatisConfig.class)
 @SpringBootApplication(scanBasePackages = "hello.itemservice.web") // 컴포넌트 스캔 범위 지정, MemoryConfig는 범위에 해당안된다.
 @Slf4j
 public class ItemServiceApplication {
