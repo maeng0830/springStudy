@@ -39,6 +39,7 @@ public class JdbcTemplateItemRepositoryV3 implements ItemRepository {
 
 	// NameParameterJdbcTemplate 사용
 	private final NamedParameterJdbcTemplate template;
+	// SimpleJdbcInsert 사용
 	private final SimpleJdbcInsert jdbcInsert;
 
 	public JdbcTemplateItemRepositoryV3(DataSource dataSource) {
