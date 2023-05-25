@@ -63,7 +63,7 @@ public class InternalCallV1Test {
 	@Test
 	void externalCall() {
 		/**
-		 * 대상 객체의 내부에서 @Transactional이 적용된 메소드를 호출할 경우, 트랜잭션이 적용되지 않는다.
+		 * 대상 객체의 내부에서 @Transactional이 적용된 대상 객체의 메소드를 호출할 경우, 트랜잭션이 적용되지 않는다.
 		 * 1. callService.external()을 호출한다. 여기서 callService는 프록시 객체이다.
 		 * 2. external()에는 @Transactionl이 적용되어 있지 않기 때문에, 프록시 객체는 트랜잭션 적용 없이 실제 객체의 external()을 호출한다.
 		 * 3. external()은 내부에서 @Transactional이 적용된 internal()을 호출한다.

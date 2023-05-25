@@ -1,12 +1,10 @@
 package hello.springtx.order;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.weaver.ast.Or;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,48 +22,128 @@ class OrderServiceTest {
 	@Test
 	void order() throws NotEnoughMoneyException {
 		// given
-		Order order = new Order();
-		order.setUsername("정상");
+		Order order1 = new Order();
+		order1.setUsername("정상");
+
+		Order order2 = new Order();
+		order2.setUsername("예외");
+
+		Order order3 = new Order();
+		order3.setUsername("잔고부족");
 
 		// when
-		orderService.order(order);
+		orderService.order(order1);
 
 		//then
-		Order findOrder = orderRepository.findById(order.getId()).get();
-		assertThat(findOrder.getPayStatus()).isEqualTo("완료");
+		// 정상
+		Order findOrder1 = orderRepository.findById(order1.getId()).get();
+		assertThat(findOrder1.getPayStatus()).isEqualTo("완료");
+
+		// 예외
+		assertThatThrownBy(() -> orderService.order(order2))
+				.isInstanceOf(RuntimeException.class);
+		Optional<Order> orderOptional = orderRepository.findById(order2.getId());
+		assertThat(orderOptional).isEmpty();
+
+		// 잔고부족
+		assertThatThrownBy(() -> orderService.order(order3))
+				.isInstanceOf(NotEnoughMoneyException.class);
+		Order findOrder3 = orderRepository.findById(order3.getId()).get();
+		assertThat(findOrder3.getPayStatus()).isEqualTo("대기");
+	}
+
+	@Test
+	void orderTryCatchUncheckedException() throws NotEnoughMoneyException {
+		// given
+		Order order1 = new Order();
+		order1.setUsername("정상");
+
+		Order order2 = new Order();
+		order2.setUsername("예외");
+
+		Order order3 = new Order();
+		order3.setUsername("잔고부족");
+
+		// when
+		orderService.orderTryCatchUncheckedException(order1);
+
+		//then
+		// 정상
+		Order findOrder1 = orderRepository.findById(order1.getId()).get();
+		assertThat(findOrder1.getPayStatus()).isEqualTo("완료");
+
+		// 예외
+		orderService.orderTryCatchUncheckedException(order2);
+		Optional<Order> orderOptional = orderRepository.findById(order2.getId());
+		assertThat(orderOptional.get().getPayStatus()).isNull();
+		assertThat(orderOptional.get().getId()).isEqualTo(2);
+
+		// 잔고부족
+		assertThatThrownBy(() -> orderService.orderTryCatchUncheckedException(order3))
+				.isInstanceOf(NotEnoughMoneyException.class);
+		Order findOrder3 = orderRepository.findById(order3.getId()).get();
+		assertThat(findOrder3.getPayStatus()).isEqualTo("대기");
+	}
+
+	@Test
+	void orderTryCatchCheckedException() {
+		// given
+		Order order1 = new Order();
+		order1.setUsername("정상");
+
+		Order order2 = new Order();
+		order2.setUsername("예외");
+
+		Order order3 = new Order();
+		order3.setUsername("잔고부족");
+
+		// when
+		orderService.orderTryCatchCheckedException(order1);
+
+		//then
+		// 정상
+		Order findOrder1 = orderRepository.findById(order1.getId()).get();
+		assertThat(findOrder1.getPayStatus()).isEqualTo("완료");
+
+		// 예외
+		assertThatThrownBy(() -> orderService.orderTryCatchCheckedException(order2))
+				.isInstanceOf(RuntimeException.class);
+		Optional<Order> orderOptional = orderRepository.findById(order2.getId());
+		assertThat(orderOptional).isEmpty();
+
+		// 잔고부족
+		orderService.orderTryCatchCheckedException(order3);
+		Order findOrder3 = orderRepository.findById(order3.getId()).get();
+		assertThat(findOrder3.getPayStatus()).isEqualTo("대기");
 	}
 
 	@Test
 	void runtimeException() throws NotEnoughMoneyException {
 		// given
-		Order order = new Order();
-		order.setUsername("예외");
+		Order order2 = new Order();
+		order2.setUsername("예외");
 
 		// when
 
 		//then
-		assertThatThrownBy(() -> orderService.order(order))
+		assertThatThrownBy(() -> orderService.order(order2))
 				.isInstanceOf(RuntimeException.class);
-		Optional<Order> orderOptional = orderRepository.findById(order.getId());
+		Optional<Order> orderOptional = orderRepository.findById(order2.getId());
 		assertThat(orderOptional).isEmpty();
 	}
 
 	@Test
 	void notEnoughMoneyException() {
 		// given
-		Order order = new Order();
-		order.setUsername("잔고부족");
+		Order order3 = new Order();
+		order3.setUsername("잔고부족");
 
 		// when
-		try {
-			orderService.order(order);
-		} catch (NotEnoughMoneyException e) {
-			log.info("고객에게 잔고 부족을 알리고 별도의 계좌로 입금하도록 안내");
-			e.printStackTrace();
-		}
 
 		//then
-		Order findOrder = orderRepository.findById(order.getId()).get();
-		assertThat(findOrder.getPayStatus()).isEqualTo("대기");
+		assertThatThrownBy(() -> orderService.order(order3))
+				.isInstanceOf(NotEnoughMoneyException.class);
+		Order findOrder3 = orderRepository.findById(order3.getId()).get();
+		assertThat(findOrder3.getPayStatus()).isEqualTo("대기");
 	}
 }
